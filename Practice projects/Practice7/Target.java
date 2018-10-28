@@ -30,12 +30,12 @@ public class Target extends GraphicsProgram {
             if(counter % 2 == 0) {
                     oval = new GOval(XCenter - Radius / (Math.pow(2, counter)), YCenter - Radius / (Math.pow(2, counter)), Diameter / (Math.pow(2, counter)), Diameter / (Math.pow(2, counter)));
                     oval.setFilled(true);
-                    oval.setFillColor(Color.red);
+                    oval.setFillColor(Color.blue);
                     add(oval);
             } else {
                 oval = new GOval(XCenter - Radius / (Math.pow(2, counter)), YCenter - Radius/ (Math.pow(2, counter)), Diameter / (Math.pow(2, counter)), Diameter / (Math.pow(2, counter)));
                 oval.setFilled(true);
-                oval.setFillColor(Color.white);
+                oval.setFillColor(Color.yellow);
                 add(oval);
             }
         }
