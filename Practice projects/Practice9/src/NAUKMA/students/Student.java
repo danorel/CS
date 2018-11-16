@@ -1,10 +1,12 @@
 package NAUKMA.students;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Student {
     private Scanner scanner = new Scanner(System.in);
+    private String info = "";
 
     private final int MAXStudentID = 999999;
     private final int MINStudentID = 100000;
@@ -16,28 +18,75 @@ public class Student {
     private int studentID;
     private int YearOfEducation;
     private String specialisation;
-    private String faculty;
-    private int group;
     private ArrayList<Integer> grades = new ArrayList<>();
     private ArrayList<String> lessons = new ArrayList<>();
-    private ArrayList<Integer> studentsID = new ArrayList<>();
-    private int currentPointer = 0;
 
     Student(){
-        CheckID(getGeneratedID());
-        studentID = studentsID.get(studentsID.size() - 1);
+        studentID = getUniqueID();
         YearOfEducation = 1;
+        setNS();
+        setSpecialisation();
     }
 
-    Student(String name, String surname, String faculty, String specialisation){
+    private void setSpecialisation() {
+        System.out.print("What is your specialisation? (Sample: 'Computer Science') Answer: ");
+        String specialisation = scanner.nextLine();
+        this.specialisation = specialisation;
+    }
+
+    private void setNS() {
+        System.out.print("What is your name and surname? (Sample: 'George Lobanoff') Answer: ");
+        String NS = scanner.nextLine();
+        String []StudentInit = NS.split(" ");
+        this.name = StudentInit[0];
+        this.surname = StudentInit[1];
+    }
+
+    Student(String name, String surname, String faculty, String specialisation, int YearOfEducation){
         this.name = name;
         this.surname = surname;
-        this.faculty = faculty;
         this.specialisation = specialisation;
-        CheckID(getGeneratedID());
-        this.studentID = studentsID.get(studentsID.size() - 1);
-        this.YearOfEducation = 1;
-        this.group = 1 + (int)(Math.random() * 2);
+        this.YearOfEducation = YearOfEducation;
+        this.studentID = getUniqueID();
+    }
+
+    public void saveInformationAboutStudent(Student student, String dir, String fileName){
+        try {
+            File directory = new File(dir);
+            directory.mkdir();
+            FileWriter fileWriter = new FileWriter(dir + "/" + fileName);
+            BufferedWriter writer = new BufferedWriter(fileWriter);
+            writer.write(info);
+            writer.close();
+        } catch(Exception exception){
+            exception.printStackTrace();
+        }
+    }
+
+    public void getInformationAboutStudent(String dir, String fileName){
+        try{
+            FileReader fileReader = new FileReader(dir + "/" + fileName);
+            BufferedReader reader = new BufferedReader(fileReader);
+            String str = null;
+            while((str = reader.readLine()) != null){
+                System.out.println(str);
+            }
+            reader.close();
+        } catch(Exception exception){
+            exception.printStackTrace();
+        }
+    }
+
+    public void getStudentIDFromFile(String dir, String fileName){
+        try{
+            FileReader fileReader = new FileReader(dir + "/" + fileName);
+            BufferedReader reader = new BufferedReader(fileReader);
+            String []array = reader.readLine().split(" ");
+            reader.close();
+            System.out.println(array[2]);
+        } catch(Exception exception){
+            exception.printStackTrace();
+        }
     }
 
     public void setLessons(int Amount){
@@ -60,28 +109,11 @@ public class Student {
         }
     }
 
-    private void CheckID(int ID) {
+    private int getUniqueID() {
         boolean uniqueID = false;
-        int tempID = ID;
-        if(studentsID.size() == 0){
-            studentsID.add(ID);
-        } else {
-            do{
-                for(int counter = 0; counter < studentsID.size(); counter++){
-                    if(studentsID.get(counter).equals(ID)){
-                        System.err.println("Fatal ERROR! This ID is already exists! Trying to generate the new one...");
-                        uniqueID = false;
-                        tempID = getGeneratedID();
-                        CheckID(tempID);
-                    } else {
-                        uniqueID = true;
-                    }
-                }
-                if(uniqueID){
-                    studentsID.add(tempID);
-                }
-            } while(uniqueID);
-        }
+        int ID = getGeneratedID();
+
+        return ID;
     }
 
     private int getGeneratedID() {
@@ -90,7 +122,7 @@ public class Student {
 
     @Override
     public String toString(){
-        String info = "Student ID: " + this.studentID + "\nStudent NS: " + this.name + " " + this.surname + "\nFaculty: " + this.faculty + "\nSpecialisation: " + this.specialisation + "\nGroup: " + this.group;
+        this.info = "Student ID: " + this.studentID + "\nStudent NS: " + this.name + " " + this.surname + "\nSpecialisation: " + this.specialisation + "\nYear of education: " + YearOfEducation;
         return info;
     }
 }
