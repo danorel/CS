@@ -50,6 +50,7 @@ public class Student {
         this.studentID = getUniqueID();
     }
 
+
     public void saveInformationAboutStudent(Student student, String dir, String fileName){
         try {
             File directory = new File(dir);

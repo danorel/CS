@@ -26,8 +26,5 @@ public class runStudent{
         separateLines();
         student.getInformationAboutStudent(dir, fileName);
         separateLines();
-        Student student1 = new Student();
-        System.out.println(student1.toString());
-        student1.saveInformationAboutStudent(student1, dir, fileName);
     }
 }
