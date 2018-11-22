@@ -9,22 +9,13 @@ public class runStudent{
         runStudent.run();
     }
 
-    public void separateLines(){
-        System.out.println("--------------------------");
-    }
-
     public void run(){
-        Student student = new Student("Daniel", "Orel", "FI", "CS", 1);
-        student.setLessons(5);
-        student.earnGrades();
-        student.getGrades();
-        separateLines();
-        System.out.println(student.toString());
-        student.saveInformationAboutStudent(student, dir, fileName);
-        separateLines();
-        student.getStudentIDFromFile(dir, fileName);
-        separateLines();
-        student.getInformationAboutStudent(dir, fileName);
-        separateLines();
+        FIStudent fiStudent1 = new FIStudent();
+        System.out.println(fiStudent1);
+
+        FIStudent fiStudent2 = new FIStudent("George", "Lobanoff", 2);
+        fiStudent2.saveInformationAboutStudent(fiStudent2, dir, fileName);
+        fiStudent2.getInformationAboutStudent(dir, fileName);
+        fiStudent2.makeProgram();
     }
 }
