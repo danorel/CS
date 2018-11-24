@@ -21,6 +21,7 @@ public class Runner {
 
     public void run(){
         setUpDirectoryAndConnectionsToFile();
+        Interface IF = new Interface(reader);
 
         FIStudent fiStudent1 = new FIStudent();
         fiStudent1.setSpecialisation("PE");
@@ -42,7 +43,6 @@ public class Runner {
 
         try{
             writer.close();
-            reader.close();
         } catch (IOException exception){
             exception.printStackTrace();
         }
