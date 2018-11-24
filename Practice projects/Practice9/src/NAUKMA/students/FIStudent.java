@@ -1,16 +1,13 @@
 package NAUKMA.students;
 
-import java.util.ArrayList;
-
-public class FIStudent extends Student {
+public class FIStudent extends Student{
     private String faculty = "Informatics faculty";
-
+    private String specialisation;
     private String[] specList = {"CS", "PE", "PM"};
 
     public FIStudent(){
         super();
-        super.faculty = faculty;
-        setSpecialisation();
+        super.faculty = this.faculty;
     }
 
     /**
@@ -20,16 +17,22 @@ public class FIStudent extends Student {
      */
     public FIStudent(String name, String surname, int YearOfEducation){
         super(name, surname, YearOfEducation);
-        setSpecialisation();
         super.faculty = faculty;
     }
 
-    private void setSpecialisation(){
-        System.out.println("Enter your specialisation from the spec list: ");
+    public void setSpecialisation(String specialisation){
+        boolean isValidSpecialisation = false;
         for(int counter = 0; counter < specList.length; counter++){
-            System.out.println((counter + 1) + ". "+ specList[counter]);
+            if(specialisation.equals(specList[counter])){
+                isValidSpecialisation = true;
+                super.specialisation = specialisation;
+                break;
+            } else if(counter == 2 && !isValidSpecialisation){
+                System.out.println("Setting the default specialisation Computer Science");
+                super.specialisation = "CS";
+                break;
+            }
         }
-        specialisation = scanner.nextLine();
     }
 
     public void makeProgram(){
@@ -37,20 +40,14 @@ public class FIStudent extends Student {
         int A, B;
         switch (option){
             case 1:
-                System.out.println("Enter the numbers A and B. This program will calculate the summary of A and B.");
-                System.out.print("A: ");
-                A = scanner.nextInt();
-                System.out.print("B: ");
-                B = scanner.nextInt();
-                calculateSummary(A, B);
+                System.out.println("This program will calculate the summary of 5 and -5.");
+                calculateSummary(5, -5);
                 break;
             case 2:
-                System.out.println("Enter the restrictions [A, B]. This program will generate random number in this borders.");
+                System.out.println("This program will generate random number in this borders [1, 100].");
                 do{
-                    System.out.print("A: ");
-                    A = scanner.nextInt();
-                    System.out.print("B: ");
-                    B = scanner.nextInt();
+                    A = 1;
+                    B = 100;
                     if(A > B){
                         System.err.println("Fatal error, A > B! Re-enter the borders.");
                     }
