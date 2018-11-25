@@ -2,108 +2,104 @@ package dev.destroyer;
 import acm.graphics.GImage;
 import acm.graphics.GObject;
 import acm.graphics.GPoint;
+import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 public class Interface extends GraphicsProgram {
-    private int Amount;
-    private static final int WIDTH = 640;
-    private static final int HEIGHT = 480;
+    protected int AmountOfTargets;
+    protected static final int WIDTH = 640;
+    protected static final int HEIGHT = 480;
+    protected static final int PAUSE_TIME = 20;
 
-    private GImage PLANE;
-    private GImage BOMB;
-    private Plane plane;
-    private Bomb bomb;
-    private GObject gobj;
-    private GPoint last;
+    protected GImage PLANE;
+    protected Plane destroyer;
+    protected Bomb bomb;
+    protected GObject GraphicObject;
+    protected GPoint bombPoint;
+    private Target[] targets;
 
-    private double scale = 0.25;
-    private boolean isLeftPressed = false;
-    private boolean isRightPressed = false;
+    private static final int PLANE_START_COORDINATE_X = 0;
+    private static final int PLANE_START_COORDINATE_Y = 20;
+
+    protected static final double SCALE = 0.25;
+    protected boolean isLeftPressed = false;
+    protected boolean isRightPressed = false;
 
     public void run(){
         this.setSize(WIDTH, HEIGHT);
-        Amount = WIDTH / 100;
-        Target[] targets = new Target[Amount];
-        for(int counter = 0, xDifference = 0; counter < targets.length; counter++, xDifference += (WIDTH / Amount)){
-            targets[counter] = new Target(xDifference, HEIGHT);
-            add(targets[counter].draw());
+
+        AmountOfTargets = WIDTH / 100;
+        targets = new Target[AmountOfTargets];
+        for(int BuildingCounter = 0, DistanceBetweenBuildings = 0; BuildingCounter < targets.length; BuildingCounter++, DistanceBetweenBuildings += (WIDTH / AmountOfTargets)){
+            targets[BuildingCounter] = new Building(DistanceBetweenBuildings, HEIGHT);
+            add(targets[BuildingCounter].draw());
         }
 
-        plane = new Plane();
+        destroyer = new Plane();
         bomb = new Bomb();
-        PLANE = new GImage(plane.rightPath, 0, 20);
-        PLANE.scale(scale);
+        bombPoint = new GPoint();
+        PLANE = new GImage(destroyer.rightPath, PLANE_START_COORDINATE_X, PLANE_START_COORDINATE_Y);
+        PLANE.scale(SCALE);
         add(PLANE);
-        addMouseListeners();
         addKeyListeners();
     }
 
-    public void mousePressed(MouseEvent e) {
-        last = new GPoint(e.getPoint());
-        gobj = getElementAt(last);
-    }
-
-    public void mouseDragged(MouseEvent e) {
-        if (gobj == PLANE) {
-            gobj.move(e.getX() - last.getX(), e.getY() - last.getY());
-            last = new GPoint(e.getPoint());
-        }
-    }
-
-    public void keyPressed(KeyEvent e) {
-//        38 - top, 40 - bottom, 39 - right, 37 - left
-
-        if(e.getKeyCode() == 10){
-            BOMB = new GImage(bomb.Path, PLANE.getX(), PLANE.getY());
-            BOMB.scale(scale);
-            add(BOMB);
-            while(BOMB.getY() < getHeight()){
-                remove(BOMB);
-                BOMB = new GImage(bomb.Path, BOMB.getX(), BOMB.getY());
-                BOMB.move(0, bomb.verticalVelocity);
-                pause(100);
-                add(BOMB);
+    public void keyPressed(KeyEvent event){
+        if(event.getKeyCode() == 10){
+            bomb = new Bomb(PLANE.getX(), PLANE.getY());
+            bomb.setColor(Color.BLACK);
+            bomb.setVisible(true);
+            add(bomb);
+            while(bomb.getY() + Bomb.RADIUS < getHeight()){
+                bomb.move(0, 5);
+                pause(PAUSE_TIME);
             }
-        } else if(e.getKeyCode() == 37 || e.getKeyCode() == 38 || e.getKeyCode() == 39 || e.getKeyCode() == 40){
+            bombPoint.setLocation(bomb.getX(), bomb.getY());
+            GraphicObject = getElement(0);
+            System.out.println(GraphicObject);
+            if(GraphicObject instanceof GRect){
+                remove(GraphicObject);
+            }
+        } else if(event.getKeyCode() == 37 || event.getKeyCode() == 38 || event.getKeyCode() == 39 || event.getKeyCode() == 40) {
             remove(PLANE);
 
-            if(e.getKeyCode() == 37){
-                PLANE = new GImage(plane.leftPath, PLANE.getX(), PLANE.getY());
-                PLANE.move(-plane.horizontalVelocity, 0);
+            if (event.getKeyCode() == 37) {
+                PLANE = new GImage(destroyer.leftPath, PLANE.getX(), PLANE.getY());
+                PLANE.move(-destroyer.horizontalVelocity, 0);
                 isLeftPressed = true;
             }
 
-            if(e.getKeyCode() == 39){
-                PLANE = new GImage(plane.rightPath, PLANE.getX(), PLANE.getY());
-                PLANE.move(plane.horizontalVelocity, 0);
+            if (event.getKeyCode() == 39) {
+                PLANE = new GImage(destroyer.rightPath, PLANE.getX(), PLANE.getY());
+                PLANE.move(destroyer.horizontalVelocity, 0);
                 isRightPressed = true;
             }
 
-            if(isLeftPressed && e.getKeyCode() == 38){
-                PLANE = new GImage(plane.topLeftPath, PLANE.getX(), PLANE.getY());
-                PLANE.move(-plane.horizontalVelocity, -plane.verticalVelocity);
+            if (isLeftPressed && event.getKeyCode() == 38) {
+                PLANE = new GImage(destroyer.topLeftPath, PLANE.getX(), PLANE.getY());
+                PLANE.move(-destroyer.horizontalVelocity, -destroyer.verticalVelocity);
             }
 
-            if(isRightPressed && e.getKeyCode() == 38){
-                PLANE = new GImage(plane.topRightPath, PLANE.getX(), PLANE.getY());
-                PLANE.move(plane.horizontalVelocity, -plane.verticalVelocity);
+            if (isRightPressed && event.getKeyCode() == 38) {
+                PLANE = new GImage(destroyer.topRightPath, PLANE.getX(), PLANE.getY());
+                PLANE.move(destroyer.horizontalVelocity, -destroyer.verticalVelocity);
             }
 
-            if(isRightPressed && e.getKeyCode() == 40){
-                PLANE = new GImage(plane.bottomRightPath, PLANE.getX(), PLANE.getY());
-                PLANE.move(plane.horizontalVelocity, plane.verticalVelocity);
+            if (isRightPressed && event.getKeyCode() == 40) {
+                PLANE = new GImage(destroyer.bottomRightPath, PLANE.getX(), PLANE.getY());
+                PLANE.move(destroyer.horizontalVelocity, destroyer.verticalVelocity);
             }
 
-            if(isLeftPressed && e.getKeyCode() == 40){
-                PLANE = new GImage(plane.bottomLeftPath, PLANE.getX(), PLANE.getY());
-                PLANE.move(-plane.horizontalVelocity, plane.verticalVelocity);
+            if (isLeftPressed && event.getKeyCode() == 40) {
+                PLANE = new GImage(destroyer.bottomLeftPath, PLANE.getX(), PLANE.getY());
+                PLANE.move(-destroyer.horizontalVelocity, destroyer.verticalVelocity);
             }
 
-            PLANE.scale(scale);
-            pause(20);
+            PLANE.scale(SCALE);
+            pause(PAUSE_TIME);
             add(PLANE);
         }
     }
