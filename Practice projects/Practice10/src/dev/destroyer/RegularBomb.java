@@ -5,13 +5,16 @@ import acm.graphics.GOval;
 public class RegularBomb extends Bomb {
     public static final int RADIUS = 15;
     private double velocity = 5.0;
+    private String type = "Regular Bomb";
+    private String NumberOfProduct;
 
-    public RegularBomb() {
+    public RegularBomb(String NumberOfProduct) {
         GOval bomb = new GOval(2 * RADIUS, 2 * RADIUS);
+        this.NumberOfProduct = NumberOfProduct;
         markAsComplete();
     }
 
-    public RegularBomb(double x, double y) {
+    public RegularBomb(double x, double y, String NumberOfProduct) {
         setLocation(x, y);
     }
 
@@ -32,7 +35,11 @@ public class RegularBomb extends Bomb {
 
     @Override
     public String toString() {
-        return "Speed: " + this.velocity + "\nRadius: " + RegularBomb.RADIUS + "\n";
+        return this.type + "\nSpeed: " + this.velocity + "\nRadius: " + RegularBomb.RADIUS + "\nNumber of product: " + getNumberOfProduct() + "\n";
     }
 
+    @Override
+    public String getNumberOfProduct() {
+        return this.NumberOfProduct;
+    }
 }

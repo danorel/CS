@@ -7,4 +7,5 @@ public abstract class Bomb extends GCompound {
     abstract public double getVelocity();
     abstract public int getRadius();
     abstract public String toString();
+    abstract public String getNumberOfProduct();
 }
