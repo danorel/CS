@@ -2,16 +2,16 @@ package dev.destroyer;
 
 import acm.graphics.GOval;
 
-public class RegularBomb extends Bomb {
-    public static final int RADIUS = 15;
+public class NuclearBomb extends Bomb {
+    public static final int RADIUS = 20;
     private double velocity = 5.0;
 
-    public RegularBomb() {
+    public NuclearBomb() {
         GOval bomb = new GOval(2 * RADIUS, 2 * RADIUS);
         markAsComplete();
     }
 
-    public RegularBomb(double x, double y) {
+    public NuclearBomb(double x, double y) {
         setLocation(x, y);
     }
 
@@ -27,12 +27,11 @@ public class RegularBomb extends Bomb {
 
     @Override
     public int getRadius() {
-        return RegularBomb.RADIUS;
+        return NuclearBomb.RADIUS;
     }
 
     @Override
     public String toString() {
         return "Speed: " + this.velocity + "\nRadius: " + RegularBomb.RADIUS + "\n";
     }
-
 }
