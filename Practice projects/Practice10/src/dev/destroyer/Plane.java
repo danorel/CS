@@ -8,5 +8,5 @@ public class Plane {
     public String bottomLeftPath = "image/bottom-left-plane.jpg";
     public String bottomRightPath = "image/bottom-right-plane.jpg";
     public double horizontalVelocity = 2;
-    public double verticalVelocity = 1;
+    public double verticalVelocity = 3;
 }

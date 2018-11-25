@@ -13,9 +13,6 @@ public class Building extends Target {
     private static final int MAX_BUILDING_Y = 400;
     private static final int MIN_BUILDING_Y = 300;
 
-    private static final int RGB_MAX = 255;
-    private static final int RGB_MIN = 0;
-
     private int xCoordinate, yCoordinate;
     public GRect Building;
 

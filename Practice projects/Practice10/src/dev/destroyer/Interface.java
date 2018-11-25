@@ -39,7 +39,7 @@ public class Interface extends GraphicsProgram {
         }
 
         destroyer = new Plane();
-        bomb = new Bomb();
+        bomb = new RegularBomb();
         bombPoint = new GPoint();
         PLANE = new GImage(destroyer.rightPath, PLANE_START_COORDINATE_X, PLANE_START_COORDINATE_Y);
         PLANE.scale(SCALE);
@@ -49,17 +49,19 @@ public class Interface extends GraphicsProgram {
 
     public void keyPressed(KeyEvent event){
         if(event.getKeyCode() == 10){
-            bomb = new Bomb(PLANE.getX(), PLANE.getY());
+            bomb = new RegularBomb(PLANE.getX(), PLANE.getY());
+            bomb.setVelocity(5.0);
             bomb.setColor(Color.BLACK);
             bomb.setVisible(true);
             add(bomb);
-            while(bomb.getY() + Bomb.RADIUS < getHeight()){
-                bomb.move(0, 5);
+            while(bomb.getY() + RegularBomb.RADIUS < (getElementAt(PLANE.getX(), HEIGHT - 50).getHeight())){
+                bomb.move(0, bomb.getVelocity());
+                bomb = new RegularBomb(bomb.getX(), bomb.getY());
+                add(bomb);
                 pause(PAUSE_TIME);
             }
-            bombPoint.setLocation(bomb.getX(), bomb.getY());
-            GraphicObject = getElement(0);
-            System.out.println(GraphicObject);
+            GraphicObject = (getElementAt(PLANE.getX(), HEIGHT - 50));
+            System.out.println(getElementAt(PLANE.getX(), HEIGHT - 50));
             if(GraphicObject instanceof GRect){
                 remove(GraphicObject);
             }
@@ -70,12 +72,14 @@ public class Interface extends GraphicsProgram {
                 PLANE = new GImage(destroyer.leftPath, PLANE.getX(), PLANE.getY());
                 PLANE.move(-destroyer.horizontalVelocity, 0);
                 isLeftPressed = true;
+                isRightPressed = false;
             }
 
             if (event.getKeyCode() == 39) {
                 PLANE = new GImage(destroyer.rightPath, PLANE.getX(), PLANE.getY());
                 PLANE.move(destroyer.horizontalVelocity, 0);
                 isRightPressed = true;
+                isLeftPressed = false;
             }
 
             if (isLeftPressed && event.getKeyCode() == 38) {
@@ -97,7 +101,6 @@ public class Interface extends GraphicsProgram {
                 PLANE = new GImage(destroyer.bottomLeftPath, PLANE.getX(), PLANE.getY());
                 PLANE.move(-destroyer.horizontalVelocity, destroyer.verticalVelocity);
             }
-
             PLANE.scale(SCALE);
             pause(PAUSE_TIME);
             add(PLANE);
