@@ -4,7 +4,7 @@ import acm.graphics.GOval;
 
 public class RegularBomb extends Bomb {
     public static final int RADIUS = 15;
-    private double velocity = 5.0;
+    private double velocity = 1.0;
     private String type = "Regular Bomb";
     private String NumberOfProduct;
 
@@ -15,6 +15,7 @@ public class RegularBomb extends Bomb {
     }
 
     public RegularBomb(double x, double y, String NumberOfProduct) {
+        this(NumberOfProduct);
         setLocation(x, y);
     }
 

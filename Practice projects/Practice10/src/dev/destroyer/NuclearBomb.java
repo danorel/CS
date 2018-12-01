@@ -4,7 +4,7 @@ import acm.graphics.GOval;
 
 public class NuclearBomb extends Bomb {
     public static final int RADIUS = 20;
-    private double velocity = 5.0;
+    private double velocity = 1.0;
     private String type = "Nuclear Bomb";
     private String NumberOfProduct;
 
