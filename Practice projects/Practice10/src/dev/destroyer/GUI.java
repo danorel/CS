@@ -1,65 +1,75 @@
 package dev.destroyer;
 
-import acm.graphics.GCanvas;
-import acm.program.GraphicsProgram;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GUI {
-    private static final int WIDTH = 640;
-    private static final int HEIGHT= 480;
+public class GUI extends JFrame {
 
-    private GCanvas Canvas;
+    private static final int WIDTH = 240;
+    private static final int HEIGHT= 160;
 
-    private JFrame FRAME;
+    private Board BOARD;
+    private Options OPTIONS_PANEL;
+
     private JPanel PANEL_BOTTOM;
     private JPanel PANEL_TOP;
     private JPanel PANEL_CENTER;
     private JButton PLAY;
     private JButton OPTIONS;
-    private JCheckBox OPTIONS_CHECKBOX_
+    private JButton BACK;
+    private JCheckBox OPTIONS_CHECKBOX_LEVEL;
 
     public static void main(String[] args) {
-        GUI gui = new GUI();
-        gui.init();
-        gui.run();
+        GUI GraphicsUI = new GUI();
+        GraphicsUI.setVisible(true);
+        GraphicsUI.initUI();
     }
 
-    public void init(){
-        FRAME = new JFrame();
-        FRAME.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    public void initUI(){
+        this.setSize(WIDTH, HEIGHT);
+        this.setTitle("User Interface");
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+
         PANEL_BOTTOM = new JPanel();
         PANEL_CENTER = new JPanel();
         PANEL_TOP = new JPanel();
         PLAY = new JButton("Play");
         OPTIONS = new JButton("Options");
+        BACK = new JButton("Back");
+        run();
     }
 
-    public void run(){
+    private void run(){
         PLAY.addActionListener(new Play_Button());
         OPTIONS.addActionListener(new Options_Button());
+        BACK.addActionListener(new Back_Button());
 
-        PANEL_BOTTOM.add(OPTIONS, BorderLayout.CENTER);
-        PANEL_CENTER.add(PLAY, BorderLayout.CENTER);
-        FRAME.add(PANEL_CENTER, BorderLayout.CENTER);
-        FRAME.add(PANEL_BOTTOM, BorderLayout.SOUTH);
+        PANEL_CENTER.add(OPTIONS, BorderLayout.CENTER);
+        PANEL_TOP.add(PLAY, BorderLayout.CENTER);
+        PANEL_BOTTOM.add(BACK, BorderLayout.CENTER);
+        this.add(PANEL_TOP, BorderLayout.NORTH);
+        this.add(PANEL_CENTER, BorderLayout.CENTER);
+        this.add(PANEL_BOTTOM, BorderLayout.SOUTH);
 
-        FRAME.setVisible(true);
-        FRAME.setSize(WIDTH, HEIGHT);
-    }
-
-    private void show_Options_window(){
-
+        this.setVisible(true);
     }
 
     public class Play_Button implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            GameInterface GI = new GameInterface(WIDTH, HEIGHT);
-            GI.run();
+            GUI GameUI = new GUI();
+            GameUI.setVisible(true);
+            BOARD = new Board();
+            GameUI.add(BOARD);
+            GameUI.pack();
+
+            GameUI.setSize(3 * WIDTH, 3 * HEIGHT);
+            GameUI.setTitle("Game Interface");
+            GameUI.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            GameUI.setLocationRelativeTo(null);
         }
     }
 
@@ -67,8 +77,25 @@ public class GUI {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            FRAME.getContentPane().removeAll();
-            FRAME.repaint();
+            GUI OptionsUI = new GUI();
+            OptionsUI.setVisible(true);
+            OptionsUI.removeAll();
+            OPTIONS_PANEL = new Options();
+            JLabel LABEL = new JLabel("GOOOD MORNING");
+            OPTIONS_PANEL.add(LABEL);
+//            OPTIONS_CHECKBOX_LEVEL = new JCheckBox("Choose level");
+//            OPTIONS_CHECKBOX_LEVEL.setSelected(true);
+//            OPTIONS_PANEL.add(OPTIONS_CHECKBOX_LEVEL);
+            OptionsUI.setTitle("Options");
+            OptionsUI.getContentPane().add(OPTIONS_PANEL, BorderLayout.CENTER);
+        }
+    }
+
+    public class Back_Button implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
         }
     }
 }
