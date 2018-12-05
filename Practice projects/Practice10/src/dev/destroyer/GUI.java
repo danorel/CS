@@ -10,6 +10,7 @@ public class GUI extends JFrame {
     private static final int WIDTH = 240;
     private static final int HEIGHT= 160;
 
+    private Background GUI_Background;
     private Board BOARD;
     private Options OPTIONS_PANEL;
 
@@ -33,6 +34,7 @@ public class GUI extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
+        GUI_Background = new Background("src/image/background/gui_background.png");
         PANEL_BOTTOM = new JPanel();
         PANEL_CENTER = new JPanel();
         PANEL_TOP = new JPanel();
@@ -40,6 +42,10 @@ public class GUI extends JFrame {
         OPTIONS = new JButton("Options");
         BACK = new JButton("Back");
         run();
+    }
+
+    private void drawBackground(){
+
     }
 
     private void run(){
@@ -62,8 +68,8 @@ public class GUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             GUI GameUI = new GUI();
             GameUI.setVisible(true);
-            BOARD = new Board();
-            GameUI.add(BOARD);
+
+            GameUI.add(new Board());
             GameUI.pack();
 
             GameUI.setSize(3 * WIDTH, 3 * HEIGHT);

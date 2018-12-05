@@ -12,16 +12,11 @@ public class Options extends JPanel {
     }
 
     public void initOptions(){
-        loadBackgroundImage();
+//        loadBackgroundImage();
 
         int w = PLANE_MODEL_IMAGE.getWidth(this);
         int h = PLANE_MODEL_IMAGE.getHeight(this);
         setPreferredSize(new Dimension(w, h));
-    }
-
-    private void loadBackgroundImage(){
-        ImageIcon BackgroundImgIcon = new ImageIcon("src/" + Background.PATH);
-        BACKGROUND_IMAGE = BackgroundImgIcon.getImage();
     }
 
     @Override

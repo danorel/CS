@@ -2,97 +2,109 @@ package dev.destroyer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
-public class Board extends JPanel implements ActionListener {
+public class Board extends JPanel implements ActionListener, KeyListener {
 
-    private Image PLANE_MODEL_IMAGE;
-    private int x, y;
-    private Image BACKGROUND_IMAGE;
-    private Plane plane;
+    private SpaceShip spaceShip;
+    private Background background;
     private Timer timer;
-
-    private static final int START_X_COORDINATE = 0;
-    private static final int START_Y_COORDINATE = 100;
+    private static final int DELAY = 30;
 
     public Board(){
         initBoard();
-        x = START_X_COORDINATE;
-        y = START_Y_COORDINATE;
     }
 
     public void initBoard(){
-        loadBackgroundImage();
-        loadPlaneImage();
+        addKeyListener(this);
+//        addMouseListener(new CustomMouseListener());
 
-        int w = BACKGROUND_IMAGE.getWidth(this);
-        int h = BACKGROUND_IMAGE.getHeight(this);
-        setPreferredSize(new Dimension(w, h));
+        background = new Background("src/image/background/background.png");
+        spaceShip = new SpaceShip();
 
-        timer = new Timer(30, this);
+        setPreferredSize(new Dimension(background.getBackgroundImageWidth(), background.getBackgroundImageHeight()));
+
+        timer = new Timer(DELAY, this);
         timer.start();
     }
 
-    private void drawPlaneMotion(Graphics g){
-        g.drawImage(PLANE_MODEL_IMAGE, x, y, this);
+    private void drawSpaceShipMotion(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(spaceShip.getImage(), spaceShip.getCurrentX(), spaceShip.getCurrentY(), this);
     }
 
-    private void loadPlaneImage() {
-        ImageIcon PlaneImgIcon = new ImageIcon("src/image/plane_models/plane_model_1_right.jpg");
-        PLANE_MODEL_IMAGE = PlaneImgIcon.getImage();
-        PLANE_MODEL_IMAGE = PLANE_MODEL_IMAGE.getScaledInstance(Plane.width / 6, Plane.height / 6 , Image.SCALE_DEFAULT);
-    }
-
-    private void loadBackgroundImage(){
-        ImageIcon BackgroundImgIcon = new ImageIcon(Background.PATH);
-        BACKGROUND_IMAGE = BackgroundImgIcon.getImage();
+    private void drawBackgroundImage(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(background.getBackgroundImage(), 0, 0, null);
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        g.drawImage(PLANE_MODEL_IMAGE, START_X_COORDINATE, START_Y_COORDINATE, null);
-        g.drawImage(BACKGROUND_IMAGE, 0, 0, null);
+        super.paintComponent(g);
 
-        drawPlaneMotion(g);
+        drawBackgroundImage(g);
+        drawSpaceShipMotion(g);
+
+        Toolkit.getDefaultToolkit().sync();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        plane = new Plane();
-        x += plane.horizontalVelocity;
-        y += plane.verticalVelocity;
-        addKeyListener(new CustomKeyListener());
+        step();
+    }
 
-        if (x > BACKGROUND_IMAGE.getWidth(this)) {
-            System.out.println(PLANE_MODEL_IMAGE.getHeight(this));
-            y = PLANE_MODEL_IMAGE.getHeight(this);
-            x = START_X_COORDINATE;
+    private void step(){
+        if(spaceShip.getCurrentX() >= background.getBackgroundImageWidth() - spaceShip.getWidth()){
+            spaceShip.x = 0;
+            spaceShip.y = spaceShip.getCurrentY();
         }
-
+        spaceShip.move();
         repaint();
+}
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        System.out.println(e.getKeyCode());
     }
 
-    public class CustomKeyListener implements KeyListener {
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            System.out.println(e.getKeyCode());
-            if(e.getKeyCode() == 39){
-
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-
-        }
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println(e.getKeyCode());
     }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        System.out.println(e.getKeyCode());
+    }
+
+//
+//    private class CustomMouseListener implements MouseListener {
+//
+//        @Override
+//        public void mouseClicked(MouseEvent e) {
+//
+//        }
+//
+//        @Override
+//        public void mousePressed(MouseEvent e) {
+//
+//        }
+//
+//        @Override
+//        public void mouseReleased(MouseEvent e) {
+//
+//        }
+//
+//        @Override
+//        public void mouseEntered(MouseEvent e) {
+//            if(e.getX() >= background.getBackgroundImageWidth() / 2){
+//                System.out.println("Hello, world!");
+//            }
+//        }
+//
+//        @Override
+//        public void mouseExited(MouseEvent e) {
+//            System.out.println("Bye, world!");
+//        }
+//    }
 }

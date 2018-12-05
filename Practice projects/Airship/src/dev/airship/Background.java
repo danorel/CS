@@ -1,4 +1,4 @@
-package dev.destroyer;
+package dev.airship;
 
 import javax.swing.*;
 import java.awt.*;
