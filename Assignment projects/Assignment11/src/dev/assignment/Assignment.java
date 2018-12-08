@@ -1,20 +1,48 @@
 package dev.assignment;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class Assignment {
 
+    private Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
         Assignment assignment = new Assignment();
-//        assignment.changeSubstring("data", "file.txt", "kek", "lol");
-//        assignment.copyDataFromFileToFile("input_data", "input.txt", "output_data", "output.txt");
-//        assignment.OddAndEvenData("data", "file.txt");
-//        assignment.cypherTheFile("data", "file.txt", "cypher_data", "cypher.txt");
-//        assignment.recypherTheFile("cypher_data", "cypher.txt", "re-cypher.txt");
-
+        assignment.functionChooser();
     }
 
-    public void changeSubstring(String dir, String src, String substr, String str){
+    public void functionChooser(){
+        System.out.println("1. ChangeSubstring");
+        System.out.println("2. CopyDataFromFileToFile");
+        System.out.println("3. OddAndEvenData");
+        System.out.println("4. CypherTheFile");
+        System.out.println("5. Re-cypherTheFile");
+        System.out.print("Enter the number of function to call: ");
+        int answer = scanner.nextInt();
+        switch(answer){
+            case 1:
+                Assignment.changeSubstring("data", "file.txt", "$", "<3");
+                break;
+            case 2:
+                Assignment.copyDataFromFileToFile("input_data", "input.txt", "output_data", "output.bak");
+                break;
+            case 3:
+                Assignment.OddAndEvenData("data", "file.txt");
+                break;
+            case 4:
+                Assignment.cypherTheFile("data", "file.txt", "cypher_data", "cypher.txt");
+                break;
+            case 5:
+                Assignment.recypherTheFile("cypher_data", "cypher.txt", "re-cypher.txt");
+                break;
+            default:
+                System.out.println("Fatal ERROR! Not valid input.");
+                break;
+        }
+    }
+
+    public static void changeSubstring(String dir, String src, String substr, String str){
         try{
             File directory = new File(dir);
             directory.mkdir();
@@ -32,7 +60,7 @@ public class Assignment {
         }
     }
 
-    public void copyDataFromFileToFile(String input_dir, String input_src, String output_dir, String output_src){
+    public static void copyDataFromFileToFile(String input_dir, String input_src, String output_dir, String output_src){
         try{
             File input_directory = new File(input_dir);
             input_directory.mkdir();
@@ -49,7 +77,6 @@ public class Assignment {
                 output_data += current_str + "\n";
             }
             reader.close();
-
             FileWriter FileWriter = new FileWriter(output_dir + "/" + output_src);
             BufferedWriter writer = new BufferedWriter(FileWriter);
             writer.write(output_data);
@@ -60,7 +87,7 @@ public class Assignment {
         }
     }
 
-    public void OddAndEvenData(String dir, String src){
+    public static void OddAndEvenData(String dir, String src){
         try{
             File directory = new File(dir);
             directory.mkdir();
@@ -83,7 +110,6 @@ public class Assignment {
                 else even_writer.write(current_str + "\n");
                 counter++;
             }
-
             even_writer.close();
             odd_writer.close();
             reader.close();
@@ -92,7 +118,7 @@ public class Assignment {
         }
     }
 
-    public void cypherTheFile(String dir, String src, String cypher_dir, String cypher_src){
+    public static void cypherTheFile(String dir, String src, String cypher_dir, String cypher_src){
         try{
             File directory = new File(dir);
             directory.mkdir();
@@ -120,7 +146,7 @@ public class Assignment {
         }
     }
 
-    public void recypherTheFile(String dir, String src, String to_src){
+    public static void recypherTheFile(String dir, String src, String to_src){
         try{
             File directory = new File(dir);
             directory.mkdir();
