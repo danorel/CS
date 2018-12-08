@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 public class Bundle {
     private static final int times = 10;
-    private static final double step = 0.5;
     private Scanner scanner = new Scanner(System.in);
 
     // #1. Ten times show name and surname
